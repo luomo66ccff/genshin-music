@@ -20,12 +20,13 @@ import AppBase from "$cmp/AppBase";
 import {NextComponentType, NextPageContext} from "next";
 import {delay, setIfInTWA} from "$lib/utils/Utilities";
 import * as serviceWorker from "$/serviceWorkerRegistration"
-import {APP_NAME, BASE_PATH, IS_TAURI} from "$config";
+import {APP_NAME, BASE_PATH, IS_BETA, IS_TAURI} from "$config";
 import ErrorBoundaryRedirect from "$cmp/shared/Utility/ErrorBoundaryRedirect";
 import {logger} from "$stores/LoggerStore";
 import {logsStore} from "$stores/LogsStore";
 import {GoogleAnalyticsScript} from "$cmp/GoogleAnalyticsScript";
 import Head from "next/head";
+import {useRouter} from "next/router";
 import {asyncConfirm} from "$cmp/shared/Utility/AsyncPrompts";
 
 import {i18n} from "$i18n/i18n"
@@ -35,6 +36,7 @@ interface CustomPageProps {
 }
 
 export default function App({Component, pageProps}: AppProps<CustomPageProps>) {
+    const isHomepage = useRouter().pathname === '/';
     useEffect(() => {
         if (window.location.hostname === "localhost") return
         const originalErrorLog = console.error.bind(console)
@@ -111,6 +113,8 @@ export default function App({Component, pageProps}: AppProps<CustomPageProps>) {
     const getLayout = Component.getLayout || ((page: NextComponentType<NextPageContext, any, any>) => page)
     return (<>
             <Head>
+                {(IS_BETA || isHomepage) && <meta name="robots" key="robots"
+                    content={IS_BETA ? "noindex" : "index,follow,max-image-preview:large"}/>}
                 <meta name="viewport"
                       content="user-scalable=no, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
 

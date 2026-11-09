@@ -1,3 +1,4 @@
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
+Sitemap: https://gsmusic.march7th.cn/sitemap.xml
